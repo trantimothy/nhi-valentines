@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nhi, will you be my Valentine? 💘</title>
+  <style>
+    :root{
+      --bg1:#0b1220;
+      --bg2:#1b1142;
+      --card:#0f172aee;
+      --text:#e5e7eb;
+      --muted:#a3a3a3;
+      --yes:#22c55e;
+      --no:#ef4444;
+      --accent:#f472b6;
+      --shadow: 0 20px 60px rgba(0,0,0,.45);
+      --radius: 22px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color:var(--text);
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      background:
+        radial-gradient(1200px 800px at 20% 20%, rgba(244,114,182,.18), transparent 60%),
+        radial-gradient(900px 600px at 70% 40%, rgba(34,197,94,.14), transparent 55%),
+        radial-gradient(900px 700px at 60% 90%, rgba(239,68,68,.12), transparent 55%),
+        linear-gradient(135deg, var(--bg1), var(--bg2));
+      overflow:hidden;
+    }
+
+    /* floating hearts */
+    .hearts{
+      position:fixed; inset:0; pointer-events:none; overflow:hidden;
+      opacity:.6;
+    }
+    .heart{
+      position:absolute;
+      font-size:18px;
+      filter: drop-shadow(0 6px 12px rgba(0,0,0,.35));
+      animation: floatUp linear infinite;
+      user-select:none;
+    }
+    @keyframes floatUp{
+      from{ transform: translateY(20vh) translateX(0) rotate(0deg); opacity:0}
+      15%{opacity:1}
+      to{ transform: translateY(-120vh) translateX(40px) rotate(20deg); opacity:0}
+    }
+
+    .wrap{
+      width:min(860px, 92vw);
+      padding: 28px;
+    }
+    .card{
+      background:var(--card);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 26px;
+      position:relative;
+      overflow:hidden;
+    }
+    .glow{
+      position:absolute; inset:-80px;
+      background: radial-gradient(circle at 30% 20%, rgba(244,114,182,.25), transparent 55%),
+                  radial-gradient(circle at 70% 30%, rgba(34,197,94,.18), transparent 55%),
+                  radial-gradient(circle at 40% 80%, rgba(239,68,68,.14), transparent 55%);
+      filter: blur(24px);
+      opacity:.8;
+      pointer-events:none;
+    }
+
+    .top{
+      display:flex;
+      gap:18px;
+      align-items:flex-start;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      position:relative;
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      background: rgba(244,114,182,.12);
+      border:1px solid rgba(244,114,182,.28);
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:14px;
+      color:#ffd7ea;
+      margin-bottom:14px;
+    }
+    .badge .dot{
+      width:10px; height:10px; border-radius:50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 6px rgba(244,114,182,.15);
+    }
+    h1{
+      margin:0;
+      font-size: clamp(28px, 4vw, 46px);
+      line-height:1.08;
+      letter-spacing:-0.02em;
+    }
+    h1 .name{
+      color:#ffd1e7;
+      text-shadow: 0 0 18px rgba(244,114,182,.25);
+    }
+    .sub{
+      margin:12px 0 0 0;
+      color: rgba(229,231,235,.86);
+      font-size: clamp(15px, 1.6vw, 18px);
+      line-height:1.55;
+      max-width: 56ch;
+    }
+    .note{
+      margin-top:14px;
+      color: rgba(163,163,163,.95);
+      font-size: 13.5px;
+    }
+
+    .photo{
+      width: 150px;
+      height: 150px;
+      border-radius: 28px;
+      border:1px solid rgba(255,255,255,.12);
+      background:
+        radial-gradient(circle at 30% 30%, rgba(244,114,182,.35), transparent 60%),
+        radial-gradient(circle at 70% 60%, rgba(34,197,94,.20), transparent 55%),
+        rgba(255,255,255,.04);
+      display:grid;
+      place-items:center;
+      flex: 0 0 auto;
+      position:relative;
+      overflow:hidden;
+    }
+    .photo span{
+      font-size: 60px;
+      transform: rotate(-8deg);
+      filter: drop-shadow(0 10px 18px rgba(0,0,0,.45));
+    }
+    .photo small{
+      position:absolute;
+      bottom:10px;
+      left:12px;
+      right:12px;
+      font-size:12px;
+      color: rgba(229,231,235,.8);
+      text-align:center;
+    }
+
+    .divider{
+      height:1px;
+      background: rgba(255,255,255,.08);
+      margin: 22px 0;
+    }
+
+    .question{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+      position:relative;
+    }
+    .prompt{
+      font-size: clamp(18px, 2.2vw, 24px);
+      margin:0;
+    }
+    .prompt b{ color:#fff }
+    .prompt .heart{
+      display:inline-block;
+      margin-left:6px;
+      color: var(--accent);
+      animation: pulse 1.2s ease-in-out infinite;
+    }
+    @keyframes pulse{
+      0%,100%{transform:scale(1)}
+      50%{transform:scale(1.16)}
+    }
+
+    .buttons{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    button{
+      border:0;
+      padding: 12px 18px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor:pointer;
+      transition: transform .12s ease, filter .12s ease;
+      box-shadow: 0 12px 26px rgba(0,0,0,.25);
+      user-select:none;
+    }
+    button:active{ transform: translateY(1px) scale(.99); }
+
+    #yesBtn{
+      background: linear-gradient(180deg, rgba(34,197,94,1), rgba(16,185,129,1));
+      color: #05210f;
+    }
+    #noBtn{
+      background: linear-gradient(180deg, rgba(239,68,68,1), rgba(244,63,94,1));
+      color: #2b0606;
+      position:relative;
+    }
+
+    .tease{
+      margin-top: 14px;
+      min-height: 56px;
+      border-radius: 16px;
+      padding: 14px 16px;
+      background: rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+      color: rgba(229,231,235,.92);
+      line-height:1.45;
+    }
+    .tease .tiny{
+      display:block;
+      color: rgba(163,163,163,.95);
+      font-size: 12.5px;
+      margin-top:6px;
+    }
+
+    .footer{
+      margin-top:16px;
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      color: rgba(163,163,163,.9);
+      font-size: 12.5px;
+      flex-wrap:wrap;
+    }
+    .footer code{
+      background: rgba(255,255,255,.06);
+      padding:2px 8px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    /* Yes modal */
+    .modal{
+      position:fixed; inset:0;
+      background: rgba(0,0,0,.55);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding: 18px;
+      z-index:50;
+    }
+    .modal.open{display:flex;}
+    .modalCard{
+      width:min(640px, 96vw);
+      background: rgba(15,23,42,.96);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 22px;
+      position:relative;
+      overflow:hidden;
+    }
+    .modalCard h2{margin:0 0 10px 0; font-size:28px}
+    .modalCard p{margin:0; line-height:1.6; color: rgba(229,231,235,.9)}
+    .modalCard .close{
+      margin-top:14px;
+      background: rgba(255,255,255,.08);
+      color: var(--text);
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow:none;
+    }
+    .confetti{
+      position:absolute; inset:0; pointer-events:none;
+      background:
+        radial-gradient(circle at 12% 18%, rgba(244,114,182,.35), transparent 40%),
+        radial-gradient(circle at 82% 22%, rgba(34,197,94,.25), transparent 40%),
+        radial-gradient(circle at 45% 78%, rgba(250,204,21,.22), transparent 40%);
+      filter: blur(22px);
+      opacity:.9;
+    }
+  </style>
+</head>
+<body>
+  <div class="hearts" id="hearts"></div>
+
+  <main class="wrap">
+    <section class="card" id="card">
+      <div class="glow"></div>
+
+      <div class="top">
+        <div>
+          <div class="badge"><span class="dot"></span> Long-distance, short patience (for missing you)</div>
+          <h1>
+            Nhi, <span class="name">will you be my Valentine</span>?
+            <span aria-hidden="true">💘</span>
+          </h1>
+          <p class="sub">
+            I know we’re miles apart, but my brain is still somehow full-time thinking about you.
+            Like… suspiciously full-time. <span aria-hidden="true">🫠</span><br/>
+            So I made you a tiny website as proof of love and mild technical unhinged-ness.
+          </p>
+          <p class="note">
+            P.S. This page contains: romance, jokes, and a very persistent “No” button.
+          </p>
+        </div>
+
+        <div class="photo" aria-label="Cute Valentine tile">
+          <span aria-hidden="true">🧸</span>
+          <small>Reserved for Nhi’s hugs</small>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="question">
+        <p class="prompt">
+          Official question for <b>Nhi</b>: May I be your Valentine?<span class="heart" aria-hidden="true">❤</span>
+        </p>
+
+        <div class="buttons">
+          <button id="yesBtn">Yes 💚</button>
+          <button id="noBtn">No 😅</button>
+        </div>
+      </div>
+
+      <div class="tease" id="tease">
+        Click a button, Nhi. No pressure. (Okay… a *little* pressure. But cute.)
+        <span class="tiny">If you hit “No,” this site will enter “Are you sure?” mode.</span>
+      </div>
+
+      <div class="footer">
+        <span>Built with 💖 + 1 (one) dramatic boyfriend/girlfriend-in-waiting.</span>
+        <span>Tip: try clicking <code>Yes</code> for best results.</span>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="title">
+    <div class="modalCard">
+      <div class="confetti"></div>
+      <h2 id="title">YAY! 💞</h2>
+      <p id="yesText"></p>
+      <button class="close" id="closeBtn">Close (but not my feelings)</button>
+    </div>
+  </div>
+
+  <script>
+    // ---- Customize these lines if you want ----
+    const HER_NAME = "Nhi";
+    const FROM_NAME = "your Valentine (me)";
+    // ------------------------------------------
+
+    const tease = document.getElementById("tease");
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn  = document.getElementById("noBtn");
+    const modal  = document.getElementById("modal");
+    const yesText= document.getElementById("yesText");
+    const closeBtn = document.getElementById("closeBtn");
+    const hearts = document.getElementById("hearts");
+
+    // Floating hearts background
+    const heartChars = ["💖","💘","💝","💗","💓","💞","✨","🌸"];
+    function spawnHeart(){
+      const s = document.createElement("div");
+      s.className = "heart";
+      s.textContent = heartChars[Math.floor(Math.random()*heartChars.length)];
+      const left = Math.random()*100;
+      const dur = 6 + Math.random()*6;
+      const size = 14 + Math.random()*18;
+      s.style.left = left + "vw";
+      s.style.animationDuration = dur + "s";
+      s.style.fontSize = size + "px";
+      s.style.top = (100 + Math.random()*20) + "vh";
+      hearts.appendChild(s);
+      setTimeout(()=> s.remove(), dur*1000);
+    }
+    setInterval(spawnHeart, 350);
+    for(let i=0;i<16;i++) setTimeout(spawnHeart, i*120);
+
+    const noPhrases = [
+      `No? 😳`,
+      `Are you sure, ${HER_NAME}?`,
+      `Like… *sure* sure?`,
+      `Are you positive-positive?`,
+      `Final answer?`,
+      `Please reconsider, I come with premium boyfriend updates.`,
+      `This “No” is looking kinda suspicious.`,
+      `What if I ask *politely*? (pretty please?)`,
+      `Okay but imagine: us, valentines, and you laughing at my jokes.`,
+      `I will literally send you virtual snacks.`,
+      `Plot twist: the No button is emotionally unstable.`,
+      `One more chance? For love? For comedy??`,
+      `I have prepared 37 romantic thoughts and 0 dignity.`,
+      `I am once again asking for your Valentine support. 🙏`,
+      `Alright ${HER_NAME}, I’m activating puppy eyes mode. 🥺`
+    ];
+
+    const noTaunts = [
+      "👀 The 'No' button is getting shy now...",
+      "🧠 Science says clicking 'Yes' increases happiness by 12,000%.",
+      "📦 This site ships love worldwide (including long distance).",
+      "🧸 Warning: choosing 'No' may cause extreme missing-you symptoms.",
+      "🎭 Dramatic sigh… okay try again."
+    ];
+
+    let noCount = 0;
+    let noWiggleMode = false;
+
+    function setTease(main, tiny){
+      tease.innerHTML = `${main}<span class="tiny">${tiny || ""}</span>`;
+    }
+
+    function moveNoButton(){
+      // move within the card area so it stays visible
+      const card = document.getElementById("card");
+      const rect = card.getBoundingClientRect();
+      const btnRect = noBtn.getBoundingClientRect();
+
+      const pad = 18;
+      const maxX = rect.width - btnRect.width - pad;
+      const maxY = rect.height - btnRect.height - pad;
+
+      const x = pad + Math.random() * Math.max(0, maxX - pad);
+      const y = pad + Math.random() * Math.max(0, maxY - pad);
+
+      // position relative to card
+      noBtn.style.position = "absolute";
+      noBtn.style.left = x + "px";
+      noBtn.style.top  = y + "px";
+      noBtn.style.transform = "rotate(" + (Math.random()*8 - 4).toFixed(1) + "deg)";
+      noBtn.style.filter = "brightness(1.02)";
+    }
+
+    function enableNoWiggle(){
+      if(noWiggleMode) return;
+      noWiggleMode = true;
+      // make the card position context for absolute movement
+      const card = document.getElementById("card");
+      card.style.position = "relative";
+      // keep buttons container from collapsing weirdly
+      document.querySelector(".buttons").style.minHeight = "54px";
+      moveNoButton();
+      // Move when she tries to hover/click (funny “hard to say no”)
+      noBtn.addEventListener("mouseenter", moveNoButton);
+      noBtn.addEventListener("touchstart", (e)=>{ e.preventDefault(); moveNoButton(); }, {passive:false});
+    }
+
+    noBtn.addEventListener("click", () => {
+      noCount++;
+      const phrase = noPhrases[Math.min(noCount, noPhrases.length-1)];
+      const extra = noTaunts[Math.floor(Math.random()*noTaunts.length)];
+
+      if(noCount < 3){
+        setTease(`${phrase}`, `${extra}`);
+      } else if(noCount < 6){
+        setTease(`${phrase} 😅`, `Okay okay… but like… ${HER_NAME}… I’m adorable though.`);
+      } else if(noCount < 9){
+        setTease(`${phrase} 🥺`, `At this point the “No” button is just a prank, right?`);
+        enableNoWiggle();
+      } else {
+        setTease(`Alright ${HER_NAME}, I respect your choice…`, `…but I’m still going to miss you a ridiculous amount. Try “Yes” if you miss me too. 💗`);
+        enableNoWiggle();
+      }
+
+      // Make YES slowly bigger (playful)
+      const scale = 1 + Math.min(0.9, noCount * 0.08);
+      yesBtn.style.transform = `scale(${scale})`;
+    });
+
+    yesBtn.addEventListener("click", () => {
+      const lines = [
+        `${HER_NAME} said YES. I repeat: ${HER_NAME} said YES!!! 💘`,
+        `Okay wow I’m smiling like a goof right now.`,
+        `You’re my favorite person across every timezone.`,
+        `Happy Valentine’s, my love. I’m lucky to have you.`,
+        `Now we celebrate with: a call, a date, and me pretending I’m not emotional. 🫶`
+      ];
+
+      yesText.textContent = lines.join(" ");
+      modal.classList.add("open");
+
+      // Make hearts spawn faster for a bit
+      let bursts = 0;
+      const burstTimer = setInterval(()=>{
+        for(let i=0;i<6;i++) spawnHeart();
+        bursts++;
+        if(bursts>10) clearInterval(burstTimer);
+      }, 180);
+    });
+
+    closeBtn.addEventListener("click", ()=> modal.classList.remove("open"));
+    modal.addEventListener("click", (e)=>{ if(e.target === modal) modal.classList.remove("open"); });
+
+    // Personalize some text right away
+    document.title = `${HER_NAME}, will you be my Valentine? 💘`;
+  </script>
+</body>
+</html>
